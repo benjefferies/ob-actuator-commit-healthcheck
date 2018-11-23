@@ -8,6 +8,6 @@ COPY --from=requirements /requirements.txt requirements.txt
 
 RUN cat requirements.txt && pip install -r requirements.txt
 
-ADD wait.py wait.py
+ADD wait.py /wait.py
 
-CMD ["python", "wait.py"]
+CMD ["/wait.py"]
