@@ -15,6 +15,7 @@ def is_up(auth):
     try:
         resp = requests_session.get(f'{url}/actuator/health', auth=auth)
         if resp.status_code != 200:
+            print(f'http_status={resp.status_code}')
             return False
         health = resp.json()
         health_status = health['status']
@@ -29,6 +30,7 @@ def is_on_commit(auth, commit):
     try:
         resp = requests_session.get(f'{url}/actuator/info', auth=auth)
         if resp.status_code != 200:
+            print(f'http_status={resp.status_code}')
             return False
         info = resp.json()
         server_commit = info['git']['commit']['id']
