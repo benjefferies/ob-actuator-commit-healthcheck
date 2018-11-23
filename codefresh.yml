@@ -4,5 +4,5 @@ steps:
   test:
     image: kennethreitz/pipenv
     commands:
-    - pipenv install
+    - pipenv install --dev
     - pipenv run pytest
