@@ -33,7 +33,7 @@ def retry_until_healthy(auth, timeout, retries, commit_id):
         if on_commit and up:
             print('Service is up')
             exit(0)
-        print(f'Waiting timeout={auth, timeout}')
+        print(f'Waiting timeout={timeout}')
         sleep(timeout)
 
 
