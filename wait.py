@@ -5,26 +5,37 @@ from distutils.util import strtobool
 from time import sleep
 
 import requests
+from requests import RequestException
 
 requests_session = requests.Session()
 
 
 def is_up(auth):
     url = os.getenv("URL")
-    resp = requests_session.get(f'{url}/actuator/health', auth=auth)
-    health = resp.json()
-    health_status = health['status']
-    print(f'status={health_status}')
-    return health_status == 'UP'
+    try:
+        resp = requests_session.get(f'{url}/actuator/health', auth=auth)
+        if resp.status_code != 200:
+            return False
+        health = resp.json()
+        health_status = health['status']
+        print(f'status={health_status}')
+        return health_status == 'UP'
+    except RequestException:
+        return False
 
 
 def is_on_commit(auth, commit):
     url = os.getenv("URL")
-    resp = requests_session.get(f'{url}/actuator/info', auth=auth)
-    info = resp.json()
-    server_commit = info['git']['commit']['id']
-    print(f'expected_commit={commit} server_commit={server_commit}')
-    return server_commit in commit
+    try:
+        resp = requests_session.get(f'{url}/actuator/info', auth=auth)
+        if resp.status_code != 200:
+            return False
+        info = resp.json()
+        server_commit = info['git']['commit']['id']
+        print(f'expected_commit={commit} server_commit={server_commit}')
+        return server_commit in commit
+    except RequestException:
+        return False
 
 
 def retry_until_healthy(auth, timeout, retries, commit_id):
