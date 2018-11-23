@@ -15,7 +15,7 @@ def is_up(auth):
     try:
         resp = requests_session.get(f'{url}/actuator/health', auth=auth)
         if resp.status_code != 200:
-            print(f'heath http_status={resp.status_code}')
+            print(f'health http_status={resp.status_code}')
             return False
         health = resp.json()
         health_status = health['status']
