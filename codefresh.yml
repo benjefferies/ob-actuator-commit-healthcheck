@@ -1,0 +1,8 @@
+version: '1.0'
+
+steps:
+  test:
+    image: kennethreitz/pipenv
+    commands:
+    - pipenv install
+    - pipenv run pytest
