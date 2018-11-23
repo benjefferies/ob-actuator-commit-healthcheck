@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 
 import os
+from distutils.util import strtobool
 from time import sleep
 
 import requests
@@ -41,6 +42,12 @@ if __name__ == '__main__':
     if not os.getenv("URL") or not os.getenv("COMMIT"):
         print('Set environment variables URL and COMMIT')
         exit(1)
+
+    if not strtobool(os.getenv("SSL_VERIFY", "True")):
+        requests_session.verify = False
+        import urllib3
+
+        urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
     timeout = int(os.getenv('TIMEOUT', 1))
     retries = int(os.getenv('RETRIES', 60))
